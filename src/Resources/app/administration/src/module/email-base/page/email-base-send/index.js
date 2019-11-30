@@ -6,7 +6,8 @@ Component.register('email-base-send', {
     template,
 
     inject: [
-        'repositoryFactory'
+        'repositoryFactory',
+        'context'
     ],
 
     data() {
@@ -41,7 +42,7 @@ Component.register('email-base-send', {
         this.customerId = this.$route.params.id;
 
         this.repositoryFactory.create('customer')
-            .get(this.customerId, Shopware.Context.api)
+            .get(this.customerId, this.context)
             .then((customer) => {
                 this.customer = customer;
                 this.mail.senderName = customer.firstName + ' ' + customer.lastName;
@@ -49,14 +50,14 @@ Component.register('email-base-send', {
             });
 
         this.repositoryFactory.create('user')
-            .search(new Criteria(), Shopware.Context.api)
+            .search(new Criteria(), this.context)
             .then((users) => {
                 this.users = users;
                 this.mail.from = users[0];
             });
 
         this.repositoryFactory.create('sales_channel')
-            .search(new Criteria(), Shopware.Context.api)
+            .search(new Criteria(), this.context)
             .then((channels) => {
                 this.salesChannels = channels;
                 this.mail.salesChannelId = channels[0];

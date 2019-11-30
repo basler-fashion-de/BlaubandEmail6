@@ -6,7 +6,8 @@ Component.register('email-base-index', {
     template,
 
     inject: [
-        'repositoryFactory'
+        'repositoryFactory',
+        'context'
     ],
 
     data() {
@@ -36,7 +37,7 @@ Component.register('email-base-index', {
         this.customerRepository = this.repositoryFactory.create('customer');
 
         this.customerRepository
-            .get(this.customerId, Shopware.Context.api)
+            .get(this.customerId, this.context)
             .then((result) => {
                 this.customer = result;
             });

@@ -1,7 +1,7 @@
 {
   "name": "blauband/email-base",
   "description": "Blauband Email",
-  "version": "v1.1.0",
+  "version": "v1.0.0",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "authors": [
