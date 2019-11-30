@@ -47,7 +47,7 @@ Component.register('email-base-index', {
         this.emailRepository
             .search(
                 (new Criteria()).addFilter(Criteria.equals('customer', this.customerId)),
-                Shopware.Context.api
+                this.context
             )
             .then((result) => {
                 this.emails = result;
