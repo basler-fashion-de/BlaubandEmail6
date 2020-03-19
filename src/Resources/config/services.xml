@@ -5,9 +5,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Blauband\EmailBase\Subscriber\Mail">
+        <service id="Blauband\EmailBase\Subscriber\MailSentSubscriber">
             <argument type="service" id="blauband_email_logged_mail.repository"/>
             <argument type="service" id="customer.repository"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService" />
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack" />
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="Blauband\EmailBase\Core\Content\LoggedMail\LoggedMailDefinition">
