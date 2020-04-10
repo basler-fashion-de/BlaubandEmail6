@@ -3,7 +3,6 @@
 namespace Blauband\EmailBase\Core\Content\LoggedMail;
 
 use Shopware\Core\Checkout\Customer\CustomerDefinition;
-use Shopware\Core\Checkout\Order\OrderDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\FkField;
@@ -46,11 +45,9 @@ class LoggedMailDefinition extends EntityDefinition
                 (new StringField('subject', 'subject'))->addFlags(new Required()),
                 (new LongTextWithHtmlField('body_html', 'bodyHtml'))->addFlags(new Required()),
                 (new LongTextField('body_plain', 'bodyPlain'))->addFlags(new Required()),
-                (new ManyToOneAssociationField('order', 'order_id', OrderDefinition::class, 'id', false)),
                 (new ManyToOneAssociationField('customer', 'customer_id', CustomerDefinition::class, 'id', false)),
                 (new StringField('bcc_mail', 'bccMail'))->addFlags(new Required()),
 
-                (new FkField('order_id', 'order', OrderDefinition::class)),
                 (new FkField('customer_id', 'customer', CustomerDefinition::class)),
 
                 (new CreatedAtField()),

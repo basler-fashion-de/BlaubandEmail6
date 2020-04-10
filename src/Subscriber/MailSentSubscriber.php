@@ -6,7 +6,8 @@ use Shopware\Core\Content\MailTemplate\Service\Event\MailSentEvent;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Storefront\Controller\CheckoutController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -28,20 +29,29 @@ class MailSentSubscriber implements EventSubscriberInterface
     /**
      * @var SystemConfigService
      */
+    private $orderRepository;
+
     private $systemConfigService;
     /**
      * @var RequestStack
      */
     private $requestStack;
 
+    private $defaultEmail;
+
+    private $defaultBcc;
+
     public function __construct(
         EntityRepositoryInterface $loggedMailRepository,
         EntityRepositoryInterface $customerRepository,
+        EntityRepositoryInterface $orderRepository,
         SystemConfigService $systemConfigService,
         RequestStack $requestStack
-    ) {
+    )
+    {
         $this->loggedMailRepository = $loggedMailRepository;
-        $this->customerRepository   = $customerRepository;
+        $this->customerRepository = $customerRepository;
+        $this->orderRepository = $orderRepository;
         $this->systemConfigService = $systemConfigService;
         $this->requestStack = $requestStack;
     }
@@ -54,40 +64,60 @@ class MailSentSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onSaveLetter(MailSentEvent $event)
+    public function onSaveLetter(MailSentEvent $event): void
     {
+        $request = $this->requestStack->getCurrentRequest();
+
+        $requestController = $request->attributes->get('_controller');
+        $mailController = sprintf('%s::%s', MailActionController::class, 'send');
+        $orderController = sprintf('%s::%s', CheckoutController::class, 'order');
+
+        if ($mailController !== $requestController && $orderController !== $requestController) {
+            return;
+        }
+
         /** @var EntityCollection $entities */
-        $customers = $this->customerRepository->search(
-            (new Criteria())->addFilter(new EqualsAnyFilter('email', $event->getRecipients())),
+        $customer = $this->customerRepository->search(
+            (new Criteria())->addFilter(new EqualsFilter('email', array_key_first($event->getRecipients()))),
             Context::createDefaultContext()
         );
 
-        $request = $this->requestStack->getCurrentRequest();
+        if (!$customer->getTotal()) {
+            return;
+        }
+
+        if ($mailController === $requestController) {
+            $this->systemConfigService->set('core.mailerSettings.senderAddress', $this->defaultEmail);
+            $this->systemConfigService->set('core.mailerSettings.deliveryAddress', $this->defaultBcc);
+        }
+
         $this->loggedMailRepository->create(
             [
                 [
-                    'fromMail' => $request->request->get('from'),
-                    'toMail' => implode(', ', $event->getRecipients()),
-                    'bccMail' => $request->request->get('bcc'),
+                    'fromMail' => $request->request->get('from') ?? $this->systemConfigService->get('core.mailerSettings.senderAddress'),
+                    'toMail' => array_key_first($event->getRecipients()),
+                    'bccMail' => $request->request->get('bcc') ?? $this->systemConfigService->get('core.mailerSettings.deliveryAddress'),
                     'subject' => $event->getSubject(),
                     'bodyHtml' => $event->getContents()['text/html'],
                     'bodyPlain' => $event->getContents()['text/plain'],
-                    'customer' => $customers->first()->getId(),
-
+                    'customer' => $customer->first()->getId(),
                 ],
             ],
             Context::createDefaultContext()
         );
     }
 
-    public function onChangeConfig(ControllerEvent $event)
+    public function onChangeConfig(ControllerEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
         $requestController = $request->attributes->get('_controller');
         $controller = sprintf('%s::%s', MailActionController::class, 'send');
 
         if ($controller === $requestController) {
-            $this->systemConfigService->set('core.basicInformation.email', $request->request->get('from'));
+            $this->defaultEmail = $this->systemConfigService->get('core.mailerSettings.senderAddress');
+            $this->defaultBcc = $this->systemConfigService->get('core.mailerSettings.deliveryAddress');
+
+            $this->systemConfigService->set('core.mailerSettings.senderAddress', $request->request->get('from'));
             $this->systemConfigService->set('core.mailerSettings.deliveryAddress', $request->request->get('bcc'));
         }
     }

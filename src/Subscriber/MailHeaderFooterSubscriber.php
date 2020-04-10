@@ -29,7 +29,12 @@ class MailHeaderFooterSubscriber implements EventSubscriberInterface
 
     public function onSave(PostWriteValidationEvent $event): void
     {
+        // todo check all variants
         foreach ($event->getCommands() as $command) {
+            if (!$command->getPayload()) {
+                return;
+            }
+
             if (
                 $command->getEntityExistence()->getEntityName() !== 'system_config' ||
                 $command->getPayload()['configuration_key'] !== 'EmailBase.config.emailHeaderFooter'

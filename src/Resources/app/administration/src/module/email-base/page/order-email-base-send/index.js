@@ -1,8 +1,8 @@
 import {Application, Component} from 'src/core/shopware';
-import template from './email-base-send.html.twig';
+import template from './order-email-base-send.html.twig';
 import Criteria from 'src/core/data-new/criteria.data';
 
-Component.register('email-base-send', {
+Component.register('order-email-base-send', {
     template,
 
     inject: [
@@ -13,6 +13,8 @@ Component.register('email-base-send', {
         return {
             customerId: null,
             customer: null,
+            orderRepository: null,
+            orderId: null,
 
             mail: {
                 subject: null,
@@ -38,15 +40,22 @@ Component.register('email-base-send', {
     created() {
         const initContainer = Application.getContainer('init');
         this.httpClient = initContainer.httpClient;
+        this.orderId = this.$route.params.id;
+        this.orderRepository = this.repositoryFactory.create('order');
 
-        this.customerId = this.$route.params.id;
-
-        this.repositoryFactory.create('customer')
-            .get(this.customerId, Shopware.Context.api)
-            .then((customer) => {
-                this.customer = customer;
-                this.mail.senderName = customer.firstName + ' ' + customer.lastName;
-                this.mail.to = customer.email;
+        this.orderRepository
+            .get(this.orderId, Shopware.Context.api)
+            .then((result) => {
+                this.customerId = result.orderCustomer.customerId;
+                console.log(this.customerId);
+                this.repositoryFactory.create('customer')
+                    .get(this.customerId, Shopware.Context.api)
+                    .then((customer) => {
+                        this.customer = customer;
+                        this.mail.senderName = customer.firstName + ' ' + customer.lastName;
+                        this.mail.to = customer.email;
+                        console.log(this.mail.to);
+                    });
             });
 
         this.repositoryFactory.create('user')
