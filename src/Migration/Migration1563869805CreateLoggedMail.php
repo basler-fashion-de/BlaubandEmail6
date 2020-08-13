@@ -18,12 +18,12 @@ class Migration1563869805CreateLoggedMail extends MigrationStep
             '
             CREATE TABLE IF NOT EXISTS `blauband_email_logged_mail` (
                 `id` binary(16) NOT NULL,
-                `from_mail` varchar(255) NOT NULL,
+                `from_mail` varchar(255),
                 `to_mail` varchar(255) NOT NULL,
-                `bcc_mail` varchar(255) NOT NULL,
-                `subject` varchar(255) NOT NULL,
-                `body_html` longtext NOT NULL,
-                `body_plain` longtext NOT NULL,
+                `bcc_mail` varchar(255),
+                `subject` varchar(255),
+                `body_html` longtext,
+                `body_plain` longtext,
                 `order_id` binary(16) DEFAULT NULL,
                 `customer_id` binary(16) DEFAULT NULL,
                 `created_at` datetime(3),

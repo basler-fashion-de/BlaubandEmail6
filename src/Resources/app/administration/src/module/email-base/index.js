@@ -24,13 +24,5 @@ Module.register('email-base', {
                 parentPath: 'email.base.index'
             }
         },
-    },
-
-    // navigation: [{
-    //     label: 'Email (EKS)',
-    //     color: '#0000bb',
-    //     path: 'email.base.index',
-    //     icon: 'default-shopping-paper-bag-product',
-    //     position: -10
-    // }]
+    }
 });
