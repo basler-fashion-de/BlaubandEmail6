@@ -9,6 +9,10 @@ Component.register('email-base-send', {
         'repositoryFactory'
     ],
 
+    mixins: [
+        Shopware.Mixin.getByName('notification')
+    ],
+
     data() {
         return {
             customerId: null,
@@ -76,11 +80,19 @@ Component.register('email-base-send', {
             this.mail.recipients = recipients;
             this.mail.contentHtml = this.mail.contentPlain.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 
+            var headers = {
+                Accept: 'application/vnd.api+json',
+                Authorization: `Bearer ${Shopware.Context.api.authToken.access}`,
+                'Content-Type': 'application/json'
+            };
+
             this.httpClient
-                .post('/_action/mail-template/send', this.mail, {})
+                .post('/_action/mail-template/send', this.mail, { headers })
                 .then((response) => {
-                    debugger;
-                    alert('Email wurde versendet');
+                    this.createNotificationSuccess({
+                        title: 'EKS',
+                        message: 'Email wurde versendet'
+                    });
                 });
         },
     }

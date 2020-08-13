@@ -12,6 +12,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\LongTextWithHtmlField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ManyToOneAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
@@ -48,7 +49,7 @@ class LoggedMailDefinition extends EntityDefinition
                 (new LongTextField('body_plain', 'bodyPlain'))->addFlags(new Required()),
                 (new ManyToOneAssociationField('order', 'order_id', OrderDefinition::class, 'id', false)),
                 (new ManyToOneAssociationField('customer', 'customer_id', CustomerDefinition::class, 'id', false)),
-                (new StringField('bcc_mail', 'bccMail'))->addFlags(new Required()),
+                (new StringField('bcc_mail', 'bccMail')),
 
                 (new FkField('order_id', 'order', OrderDefinition::class)),
                 (new FkField('customer_id', 'customer', CustomerDefinition::class)),

@@ -43,7 +43,7 @@ class Mail implements EventSubscriberInterface
         $bccMail  = '';
 
         /** @var ParameterBag $request */
-        $request = $GLOBALS["request"]->request;
+        $request = $GLOBALS['request']->request;
 
         //Eigene Sende Workflow
         if ($request->get('from')) {

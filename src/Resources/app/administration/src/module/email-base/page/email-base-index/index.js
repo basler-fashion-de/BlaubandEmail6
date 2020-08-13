@@ -45,7 +45,9 @@ Component.register('email-base-index', {
         this.emailRepository = this.repositoryFactory.create('blauband_email_logged_mail');
         this.emailRepository
             .search(
-                (new Criteria()).addFilter(Criteria.equals('customer', this.customerId)),
+                (new Criteria())
+                    .addFilter(Criteria.equals('customer', this.customerId))
+                    .addSorting(Criteria.sort('createdAt', 'DESC')),
                 Shopware.Context.api
             )
             .then((result) => {

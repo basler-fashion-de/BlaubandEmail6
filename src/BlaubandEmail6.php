@@ -4,7 +4,7 @@ namespace Blauband\EmailBase;
 
 use Shopware\Core\Framework\Plugin;
 
-class EmailBase extends Plugin
+class BlaubandEmail6 extends Plugin
 {
 
 }
