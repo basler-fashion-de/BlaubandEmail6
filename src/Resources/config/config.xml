@@ -3,9 +3,13 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
 
     <card>
-        <title>Minimal configuration</title>
-        <input-field>
-            <name>example</name>
-        </input-field>
+        <title>Advanced Configuration</title>
+        <title lang="de-DE">Erweiterte Einstellungen</title>
+        <component name="sw-entity-single-select">
+            <name>emailHeaderFooter</name>
+            <entity>mail_header_footer</entity>
+            <label>Email Header/Footer</label>
+            <helpText>Choose a Header/Footer for the plugin configuration</helpText>
+        </component>
     </card>
 </config>

@@ -1,0 +1,93 @@
+{#{% block sw_order_detail_base_line_items_card %}#}
+{#    {% parent %}#}
+{#    <sw-card v-if="emailsToShow.length" title="Emails">#}
+{#        <sw-card v-for="customerEmail in emailsToShow">#}
+{#            <sw-container columns="1fr 1fr">#}
+{#                <div> {{ customerEmail.fromMail }}</div>#}
+{#                <div> {{ customerEmail.createdAt|date({hour: "2-digit", minute: "2-digit", second: "2-digit"}) }}</div>#}
+{#                <div>{{ customerEmail.bodyPlain | truncate(45, "...") }}</div>#}
+{#                <div>#}
+{#                    <sw-button @click="onOpenModal(customerEmail)" :disabled="false" variant="primary" size="x-small"#}
+{#                               :square="false" :block="false" :isLoading="false">#}
+{#                        View#}
+{#                    </sw-button>#}
+{#                </div>#}
+{#            </sw-container>#}
+{#        </sw-card>#}
+
+{#        <sw-pagination v-if="customerEmails.length > limit"#}
+{#                       :page="groupPage"#}
+{#                       :limit="limit"#}
+{#                       :total="customerEmails.length - 1"#}
+{#                       @page-change="onGroupPageChange"#}
+{#                       :autoHide="false"#}
+{#                       :steps="[10]">#}
+{#        </sw-pagination>#}
+{#    </sw-card>#}
+{#    <sw-modal v-if="currentEmail" @modal-close="onCloseModal" :title="currentEmail.subject">#}
+{#        <div>#}
+{#            <strong>Absender:</strong> {{ currentEmail.fromMail }}#}
+{#        </div>#}
+{#        <div>#}
+{#            <strong>Versenden an:</strong> {{ currentEmail.toMail }}#}
+{#        </div>#}
+{#        <br>#}
+{#        <div>#}
+{#            <div v-html='currentEmail.bodyHtml'></div>#}
+{#            <span v-html="currentEmail.bodyHtml"> {{ currentEmail.bodyHtml }} </span>#}
+{#        </div>#}
+{#    </sw-modal>#}
+{#{% endblock %}#}
+
+
+{% block sw_order_detail_base_line_items_card %}
+    {% parent %}
+
+    <sw-card
+        class="panel has--border"
+        v-if="emailsToShow.length"
+        title="Emails">
+
+        <sw-container columns="1fr 0.2fr 4fr">
+            <div class="cards">
+                <sw-button :disabled="isButtonDisabled(customerEmail)" size="small" :square="false" :block="true" :isLoading="false"
+                           v-for="customerEmail in emailsToShow" @click="showEmail(customerEmail)" id="customerEmail.id"
+                           style="margin-bottom: 15px;">
+                    <sw-container columns="4fr 1fr 2fr">
+                        <div>
+                            <div style="margin-right: 10px"> {{ customerEmail.fromMail }}</div>
+                            <div style="margin-right: 10px"> {{ customerEmail.subject | truncate(55, "...") }} </div>
+                        </div>
+                        <div> {{ customerEmail.createdAt|date({hour: "2-digit", minute: "2-digit", second: "2-digit"}) }}</div>
+                    </sw-container>
+                </sw-button>
+            </div>
+
+            <div></div>
+            <div class="view" v-if="currentEmail" style="margin-left: 15px; margin-bottom: 10px;">
+                <div>
+                    <strong>Betreff:</strong> {{ currentEmail.subject }}
+                </div>
+                <div>
+                    <strong>Absender:</strong> {{ currentEmail.fromMail }}
+                </div>
+                <div>
+                    <strong>Versenden an:</strong> {{ currentEmail.toMail }}
+                </div>
+                <br>
+                <div v-html="currentEmail.bodyHtml" style="border: 2px solid #87CEFA; padding: 10px;">
+                    {{ currentEmail.bodyHtml }}
+                </div>
+            </div>
+        </sw-container>
+
+        <sw-pagination v-if="customerEmails.length > limit"
+                       :page="groupPage"
+                       :limit="limit"
+                       :total="customerEmails.length - 1"
+                       @page-change="onGroupPageChange"
+                       :autoHide="false"
+                       :steps="[10]">
+        </sw-pagination>
+    </sw-card>
+{% endblock %}

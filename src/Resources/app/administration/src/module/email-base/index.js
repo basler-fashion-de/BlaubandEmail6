@@ -2,6 +2,10 @@ import { Module } from 'src/core/shopware';
 
 import './page/email-base-index';
 import './page/email-base-send';
+import './page/order-email-base-send';
+/*
+import '/page/order-email-base-send';
+*/
 
 Module.register('email-base', {
     type: 'plugin',
@@ -24,13 +28,13 @@ Module.register('email-base', {
                 parentPath: 'email.base.index'
             }
         },
+        ordersend: {
+            component: 'order-email-base-send',
+            path: 'ordersend/:id',
+            meta: {
+                parentPath: 'sw.order.index'
+            }
+        },
     },
 
-    // navigation: [{
-    //     label: 'Email (EKS)',
-    //     color: '#0000bb',
-    //     path: 'email.base.index',
-    //     icon: 'default-shopping-paper-bag-product',
-    //     position: -10
-    // }]
 });

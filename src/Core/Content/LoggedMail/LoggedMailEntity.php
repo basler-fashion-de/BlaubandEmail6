@@ -3,7 +3,6 @@
 namespace Blauband\EmailBase\Core\Content\LoggedMail;
 
 use Shopware\Core\Checkout\Customer\CustomerEntity;
-use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Entity;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
@@ -40,11 +39,6 @@ class LoggedMailEntity extends Entity
      * @var string
      */
     protected $bodyPlain;
-
-    /**
-     * @var OrderEntity
-     */
-    protected $order;
 
     /**
      * @var CustomerEntity
@@ -167,26 +161,6 @@ class LoggedMailEntity extends Entity
     public function setBodyPlain(string $bodyPlain): LoggedMailEntity
     {
         $this->bodyPlain = $bodyPlain;
-
-        return $this;
-    }
-
-    /**
-     * @return OrderEntity
-     */
-    public function getOrder(): OrderEntity
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param OrderEntity $order
-     *
-     * @return LoggedMailEntity
-     */
-    public function setOrder(OrderEntity $order): LoggedMailEntity
-    {
-        $this->order = $order;
 
         return $this;
     }
