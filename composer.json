@@ -1,32 +1,31 @@
 {
-  "name": "blauband/email-base",
-  "description": "Blauband Email",
-  "version": "v1.1.0",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Blauband GmbH"
-    }
-  ],
-  "require": {
-    "shopware/core": "*",
-    "shopware/administration": "*"
-  },
-  "extra": {
-    "shopware-plugin-class": "Blauband\\EmailBase\\EmailBase",
-    "label": {
-      "de-DE": "Blauband E-Mails (EKS)",
-      "en-GB": "Blauband E-Mails (EKS)"
+    "name": "blauband/email-base",
+    "description": "Blauband Email",
+    "version": "v1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Blauband GmbH"
+        }
+    ],
+    "require": {
+        "shopware/core": "6.1.*"
     },
-    "description": {
-      "de-DE": "Blauband E-Mails (EKS)",
-      "en-GB": "Blauband E-Mails (EKS)"
+    "extra": {
+        "shopware-plugin-class": "Blauband\\EmailBase\\BlaubandEmail6",
+        "label": {
+            "de-DE": "Blauband E-Mails (EKS)",
+            "en-GB": "Blauband E-Mails (EKS)"
+        },
+        "description": {
+            "de-DE": "Blauband E-Mails (EKS)",
+            "en-GB": "Blauband E-Mails (EKS)"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Blauband\\EmailBase\\": "src/"
+        }
     }
-  },
-  "autoload": {
-    "psr-4": {
-      "Blauband\\EmailBase\\": "src/"
-    }
-  }
 }
