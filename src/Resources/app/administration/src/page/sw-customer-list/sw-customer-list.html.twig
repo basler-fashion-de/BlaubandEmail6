@@ -1,0 +1,9 @@
+{% block sw_customer_list_grid_columns_actions_view %}
+    {% parent %}
+
+    <sw-context-menu-item
+            class="sw-customer-list__email-action"
+            :routerLink="{ name: 'email.base.index', params: { id: item.id } }">
+        Email senden
+    </sw-context-menu-item>
+{% endblock %}
