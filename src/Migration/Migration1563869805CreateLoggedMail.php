@@ -39,8 +39,5 @@ class Migration1563869805CreateLoggedMail extends MigrationStep
         );
     }
 
-    public function updateDestructive(Connection $connection): void
-    {
-        $connection->executeQuery('DROP TABLE IF EXISTS `blauband_email_logged_mail`');
-    }
+    public function updateDestructive(Connection $connection): void {}
 }
