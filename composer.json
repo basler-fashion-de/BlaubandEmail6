@@ -15,6 +15,7 @@
     },
     "extra": {
         "shopware-plugin-class": "Blauband\\EmailBase\\BlaubandEmail6",
+        "plugin-icon": "src/Resources/config/plugin.png",
         "label": {
             "de-DE": "Blauband E-Mails (EKS)",
             "en-GB": "Blauband E-Mails (EKS)"
@@ -22,6 +23,14 @@
         "description": {
             "de-DE": "Blauband E-Mails (EKS)",
             "en-GB": "Blauband E-Mails (EKS)"
+        },
+        "manufacturerLink": {
+            "de-DE": "https://blauband.com",
+            "en-GB": "https://en.blauband.com"
+        },
+        "supportLink": {
+            "de-DE": "https://blauband.com/kontakt",
+            "en-GB": "https://en.blauband.com/contact"
         }
     },
     "autoload": {
