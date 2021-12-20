@@ -16,12 +16,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class BlaubandEmailLoggedMail extends AbstractController
 {
     /**
+     * @var mixed
+     */
+    private $loggedMailRepository;
+
+    /**
      * @Route("/api/v{version}/search/blauband-email-logged-mail", name="api.action.search.blauband-email-logged-mail", methods={"GET"})
      */
     public function getLoggedMails(Request $request, Context $context): JsonResponse
     {
         /** @var EntityRepositoryInterface loggedMailRepository */
         $this->loggedMailRepository = $this->container->get('blauband_email_logged_mail.repository');
-
+        return new JsonResponse();
     }
 }
