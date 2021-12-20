@@ -1,4 +1,4 @@
-import {Component} from 'src/core/shopware';
+const { Component } = Shopware;
 import template from './email-base-index.html.twig';
 import Criteria from 'src/core/data-new/criteria.data';
 
